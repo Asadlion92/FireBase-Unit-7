@@ -1,0 +1,39 @@
+.header-container {
+    height: 50px;
+    background-color: var(--dark-bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.home-icon {
+    color: var(--white);
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.categories-container {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    text-decoration: none;
+}
+
+.nav-link, .auth-link {
+    text-decoration: none;
+    color: var(--white);
+}
+
+.auth-link {
+    background-color: var(--button-bg);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.username {
+    color: var(--white);
+    margin-right: 10px;
+}
