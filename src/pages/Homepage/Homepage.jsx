@@ -1,9 +1,12 @@
 import React from 'react'
 import './Homepage.css'
+import Banner from '../../components/Banner/Banner'
 
 function HomePage() {
   return (
-    <div>HomePage</div>
+    <div className='homepage-container'>
+      <Banner />
+    </div>
   )
 }
 
