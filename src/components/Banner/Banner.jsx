@@ -19,7 +19,7 @@ function Banner() {
             //set up query to filter documents
             //sort and then get the first 5
             const q = query(articleRef, 
-                orderBy("createdAt", "asc"), limit(6))
+                orderBy("createdAt", "asc"), limit(7))
 
 
             //get documents from this collection
