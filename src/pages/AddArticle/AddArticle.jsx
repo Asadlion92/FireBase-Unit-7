@@ -5,69 +5,84 @@ import {ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 import {collection, addDoc, Timestamp} from 'firebase/firestore'
 import {useAuthState} from 'react-firebase-hooks/auth'
 import {v4} from 'uuid'
+import {toast} from 'react-toastify'
+import { useNavigate } from 'react-router'
 
 
 function AddArticle() {
-        //get user data
-        const [user] = useAuthState(auth)
-        // console.log(user)
+    //activate navigate
+    const navigate = useNavigate()
+    
 
-        //create array for categories
-        const categories = ["Health", "Food", "Travel", "Technology"]
+    //get user data
+    const [user] = useAuthState(auth)
+    // console.log(user)
 
-        //create state for user data
-        const [formData, setFormData] = useState({
-            title: "",
-            summary: "",
-            paragraphOne: "",
-            paragraphTwo: "",
-            paragraphThree: "",
-            category: "",
-            image: "",
-        })
+    //create array for categories
+    const categories = ["Health", "Food", "Travel", "Technology"]
 
-        const handleSubmit = (e) => {
-            e.preventDefault()
-            console.log('add', formData)
-            //upload image to bucket storage
-            //create reference for image
-            const imageRef = ref(storage, `images/${formData.image.name + v4()}`)
-            //now upload the image
-            uploadBytes(imageRef, formData.image)
-            .then(res => {
-                console.log(res.ref)
-                //get url from this ref
-                getDownloadURL(res.ref)
-                .then(
-                    url => {
-                        console.log("url is", url)
-                        //now I have the user data and the url for image
-                        //add document to collection
-                        //create a reference to the collection
-                        const articleRef = collection(db, 'articles')
-                        //use addDoc to add to document
-                        addDoc(articleRef, {
-                            title: formData.title,
-                            summary: formData.summary,
-                            paragraphOne: formData.paragraphOne,
-                            paragraphTwo: formData.paragraphTwo,
-                            paragraphThree: formData.paragraphThree,
-                            imageUrl: url,
-                            createdBy: user.displayName,
-                            userId: user.uid,
-                            createdAt: Timestamp.now().toDate()
-                        })
-                    })
-            })
+    //create state for user data
+    const [formData, setFormData] = useState({
+        title: "",
+        summary: "",
+        paragraphOne: "",
+        paragraphTwo: "",
+        paragraphThree: "",
+        category: "",
+        image: "",
+    })
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log('add', formData)
+        //upload image to bucket storage
+        //create reference for image
+        const imageRef = ref(storage, `images/${formData.image.name + v4()}`)
+        //now upload the image
+        uploadBytes(imageRef, formData.image)
+        .then(res => {
+            console.log(res.ref)
+            //get url from this ref
+            getDownloadURL(res.ref)
             .then(
-                res => {
-                    alert('article saved!')
-                }
-            )
-            .catch(err => {
-                console.log(err)
+                url => {
+                    console.log("url is", url)
+                    //now I have the user data and the url for image
+                    //add document to collection
+                    //create a reference to the collection
+                    const articleRef = collection(db, 'articles')
+                    //use addDoc to add to document
+                    addDoc(articleRef, {
+                        title: formData.title,
+                        summary: formData.summary,
+                        paragraphOne: formData.paragraphOne,
+                        paragraphTwo: formData.paragraphTwo,
+                        paragraphThree: formData.paragraphThree,
+                        imageUrl: url,
+                        createdBy: user.displayName,
+                        userId: user.uid,
+                        createdAt: Timestamp.now().toDate()
+                    })
+                })
+        })
+        .then(
+            res => {
+                // alert('article saved!')
+                toast('Article saved successfully!', {
+                    type: "success",
+                    autoClose: 1550,
+                })
+                //pause before going to homepage
+                setTimeout(()=>{
+                    navigate('/')
+                }, 2000
+                )
+
             })
-        }
+        .catch(err => {
+            console.log(err)
+        })
+    }
 
   return (
     <form className="add-article-form" onSubmit={handleSubmit}>
