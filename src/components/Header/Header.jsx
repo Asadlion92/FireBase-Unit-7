@@ -10,7 +10,7 @@ import {signOut} from 'firebase/auth'
 function Header() {
     //get user data
     const [user] = useAuthState(auth)
-    console.log(user)
+    // console.log(user)
 
     //create array for categories
     const categories = ["Health", "Food", "Travel", "Technology"]
@@ -21,6 +21,12 @@ function Header() {
   return (
     <div className='header-container'>
         <FaHome className='home-icon' onClick={()=> navigate('/')}/>
+        {
+          user?
+          <Link to="/addarticle" className='auth-link'>Add Article</Link>
+          :
+          null
+        }
         <div className="categories-container">
             {
                 categories.map((item, index)=><Link to={`/category/${item}`} className='nav-link' key={index}>{item}</Link>)
