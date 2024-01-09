@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import './Banner.css'
 import { db } from '../../config/firebaseConfig'
 import {getDocs, collection, query, orderBy, limit } from 'firebase/firestore'
+import { useNavigate } from 'react-router-dom'
 
 function Banner() {
+
+    let navigate = useNavigate()
 
     //Create state for main article and other articles
     const [mainArticle, setMainArticle] = useState('')
@@ -45,7 +48,9 @@ function Banner() {
 
   return (
     <div className='banner-container'>
-        <div className='main-article-container' style={{backgroundImage:`url(${mainArticle?.imageUrl})`}}>
+        <div className='main-article-container' 
+            onClick={()=>navigate(`/article/${mainArticle?.id}`)}
+            style={{backgroundImage:`url(${mainArticle?.imageUrl})`}}>
             <div className='banner-info'>
                 <h2>{mainArticle?.title}</h2>
                 <small>{mainArticle?.createdAt?.toDate().toDateString()}</small>
@@ -54,7 +59,9 @@ function Banner() {
         <div className='other-articles-container'>
             {
                 otherArticles?.map((item, index)=>
-                <div className='other-article-item' key={index} style={{backgroundImage:`url(${item?.imageUrl})`}}>
+                <div className='other-article-item' key={index} 
+                    onClick={()=>navigate(`/article/${item?.id}`)}
+                    style={{backgroundImage:`url(${item?.imageUrl})`}}>
                     <div className='banner-info'>
                         <h3>{item?.title}</h3>
                         <small>{item?.createdAt?.toDate().toDateString()}</small>

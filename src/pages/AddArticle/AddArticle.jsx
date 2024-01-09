@@ -20,7 +20,7 @@ function AddArticle() {
     const categories=["Health", "Food", "Travel", "Technology"]
 
     //create state for the user data
-    const [formData, setFormData] = React.useState({
+    const [formData, setFormData] = useState({
         title: "",
         summary: "",
         paragraphOne: "",
